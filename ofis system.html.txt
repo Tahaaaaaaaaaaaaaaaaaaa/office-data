@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Apartment Price Calculator</title>
+</head>
+<body>
+  <script>
+    function calculateNights(arrival, departure) {
+      const msPerDay = 1000 * 60 * 60 * 24;
+      const diffMs = departure - arrival;
+      return Math.floor(diffMs / msPerDay);
+    }
+
+    const apartment = prompt("Daire:");
+    const customerName = prompt("Musafir ismi:");
+
+    const [a_day, a_month, a_year] = prompt("Giris tarihi (gun ay yil):").split(" ").map(Number);
+    const [r_day, r_month, r_year] = prompt("Cikis tarihi (gun ay yil):").split(" ").map(Number);
+
+    const pricePerNight = parseFloat(prompt("Gunluk fiyat:"));
+
+    const arrival = new Date(a_year, a_month - 1, a_day);
+    const departure = new Date(r_year, r_month - 1, r_day);
+
+    const nights = calculateNights(arrival, departure);
+
+    if (nights >= 0) {
+      const totalPrice = nights * pricePerNight;
+      const officeShare = totalPrice * 0.20;
+      const tenPercent = officeShare * 0.10;
+
+      console.log(`Daire: ${apartment}`);
+      console.log(`Musafir ismi: ${customerName}`);
+      console.log(`Giris tarihi: ${a_day}/${a_month}/${a_year}`);
+      console.log(`Cikis tarihi: ${r_day}/${r_month}/${r_year}`);
+      console.log(`Toplam gun ucreti: ${nights}`);
+      console.log(`Toplam fiyat: ${totalPrice.toFixed(2)}`);
+      console.log(`Ofis payi (20%): ${officeShare.toFixed(2)}`);
+      console.log(`10% of ofis payi: ${tenPercent.toFixed(2)}`);
+    } else {
+      console.log("Unable to calculate the number of nights.");
+    }
+  </script>
+</body>
+</html>
