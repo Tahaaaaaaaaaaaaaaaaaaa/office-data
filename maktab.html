@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Booking Calculator</title>
+</head>
+<body>
+    <script>
+        function calculateNights(arrivalDay, arrivalMonth, arrivalYear, returnDay, returnMonth, returnYear) {
+            var arrivalDate = new Date(arrivalYear, arrivalMonth - 1, arrivalDay);
+            var returnDate = new Date(returnYear, returnMonth - 1, returnDay);
+            
+            if (isNaN(arrivalDate.getTime()) || isNaN(returnDate.getTime())) {
+                console.log("Error converting date.");
+                return -1;
+            }
+            
+            var timeDiff = returnDate.getTime() - arrivalDate.getTime();
+            var nights = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            return nights;
+        }
+
+        function main() {
+            var apartment = prompt("Daire: ");
+            var customerName = prompt("musafir ismi: ");
+            
+            var arrivalInput = prompt("giris tarihi: ").split(" ");
+            var aDay = parseInt(arrivalInput[0]);
+            var aMonth = parseInt(arrivalInput[1]);
+            var aYear = parseInt(arrivalInput[2]);
+            
+            var returnInput = prompt("cikis tarihi: ").split(" ");
+            var rDay = parseInt(returnInput[0]);
+            var rMonth = parseInt(returnInput[1]);
+            var rYear = parseInt(returnInput[2]);
+            
+            var pricePerNight = parseFloat(prompt("gunluk fiyat: "));
+            
+            var nights = calculateNights(aDay, aMonth, aYear, rDay, rMonth, rYear);
+            
+            console.log("\nDaire: " + apartment);
+            console.log("musafir ismi: " + customerName);
+            console.log("giris tarihi: " + aDay + "/" + aMonth + "/" + aYear);
+            console.log("cikis tarihi: " + rDay + "/" + rMonth + "/" + rYear);
+            
+            if (nights >= 0) {
+                var totalPrice = nights * pricePerNight;
+                console.log("toplan gun ucreti: " + nights);
+                console.log("toplan fiyat: " + totalPrice.toFixed(2));
+                
+                var twentyPer = totalPrice * 0.20;
+                console.log("ofis payi: " + twentyPer);
+                
+                var tenPer = twentyPer * 0.10;
+                console.log("10%: " + tenPer);
+            } else {
+                console.log("Unable to calculate the number of nights.");
+            }
+        }
+
+        main();
+    </script>
+</body>
+</html>
