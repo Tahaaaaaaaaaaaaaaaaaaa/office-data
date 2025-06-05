@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Booking Calculator</title>
+</head>
+<body>
+    <div>
+        <label>Daire: </label>
+        <input type="text" id="apartment"><br><br>
+        
+        <label>musafir ismi: </label>
+        <input type="text" id="customerName"><br><br>
+        
+        <label>giris tarihi (day month year): </label>
+        <input type="number" id="aDay" placeholder="day">
+        <input type="number" id="aMonth" placeholder="month">
+        <input type="number" id="aYear" placeholder="year"><br><br>
+        
+        <label>cikis tarihi (day month year): </label>
+        <input type="number" id="rDay" placeholder="day">
+        <input type="number" id="rMonth" placeholder="month">
+        <input type="number" id="rYear" placeholder="year"><br><br>
+        
+        <label>gunluk fiyat: </label>
+        <input type="number" step="0.01" id="pricePerNight"><br><br>
+        
+        <button onclick="calculate()">Calculate</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        function calculateNights(arrivalDay, arrivalMonth, arrivalYear, returnDay, returnMonth, returnYear) {
+            var arrivalDate = new Date(arrivalYear, arrivalMonth - 1, arrivalDay);
+            var returnDate = new Date(returnYear, returnMonth - 1, returnDay);
+            
+            if (isNaN(arrivalDate.getTime()) || isNaN(returnDate.getTime())) {
+                return -1;
+            }
+            
+            var timeDiff = returnDate.getTime() - arrivalDate.getTime();
+            var nights = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            return nights;
+        }
+
+        function calculate() {
+            var apartment = document.getElementById("apartment").value;
+            var customerName = document.getElementById("customerName").value;
+            var aDay = parseInt(document.getElementById("aDay").value);
+            var aMonth = parseInt(document.getElementById("aMonth").value);
+            var aYear = parseInt(document.getElementById("aYear").value);
+            var rDay = parseInt(document.getElementById("rDay").value);
+            var rMonth = parseInt(document.getElementById("rMonth").value);
+            var rYear = parseInt(document.getElementById("rYear").value);
+            var pricePerNight = parseFloat(document.getElementById("pricePerNight").value);
+            
+            var nights = calculateNights(aDay, aMonth, aYear, rDay, rMonth, rYear);
+            
+            var output = "<br>Daire: " + apartment + "<br>";
+            output += "musafir ismi: " + customerName + "<br>";
+            output += "giris tarihi: " + aDay + "/" + aMonth + "/" + aYear + "<br>";
+            output += "cikis tarihi: " + rDay + "/" + rMonth + "/" + rYear + "<br>";
+            
+            if (nights >= 0) {
+                var totalPrice = nights * pricePerNight;
+                output += "toplan gun ucreti: " + nights + "<br>";
+                output += "toplan fiyat: " + totalPrice.toFixed(2) + "<br>";
+                
+                var twentyPer = totalPrice * 0.20;
+                output += "ofis payi: " + twentyPer + "<br>";
+                
+                var tenPer = twentyPer * 0.10;
+                output += "10%: " + tenPer;
+            } else {
+                output += "Unable to calculate the number of nights.";
+            }
+            
+            document.getElementById("results").innerHTML = output;
+        }
+    </script>
+</body>
+</html>
